@@ -3,8 +3,8 @@ package ru.greenlight.springmvchibernate.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.greenlight.springmvchibernate.models.User;
 import ru.greenlight.springmvchibernate.service.UserService;
 
 @Controller
@@ -36,4 +36,14 @@ public class UsersController {
         return "users";
     }
 
+    @GetMapping("/users/new")
+    public String newUser(@ModelAttribute("user") User user) {
+        return "new";
+    }
+
+    @PostMapping("/users")
+    public String addUser(@ModelAttribute("user") User user) {
+        userService.addUser(user);
+        return "redirect:/users";
+    }
 }
