@@ -41,9 +41,22 @@ public class UsersController {
         return "new";
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users/add")
     public String addUser(@ModelAttribute("user") User user) {
         userService.addUser(user);
         return "redirect:/users";
     }
+
+    @GetMapping("/users/edit")
+    public String editUser(@RequestParam(value = "id", required = false) Integer id, Model model) {
+        model.addAttribute("user", userService.showUserById(id));
+        return "edit";
+    }
+
+    @PostMapping("/users/update")
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam(value = "id", required = false) Integer id) {
+        userService.updateUserById(id, user);
+        return "redirect:/users";
+    }
+
 }
