@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(int id) {
-        return userDao.getUserById(id);
+    public User showUserById(int id) {
+        return userDao.showUserById(id);
     }
 }

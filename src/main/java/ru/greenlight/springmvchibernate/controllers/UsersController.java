@@ -31,7 +31,7 @@ public class UsersController {
             if (id < 0 || id == 0) {
                 model.addAttribute("error", "Ошибка: значение id не может быть 0 или отрицательным.");
             } else {
-                model.addAttribute("user", userService.getUserById(id));
+                model.addAttribute("user", userService.showUserById(id));
                 return "user";
             }
         } else {

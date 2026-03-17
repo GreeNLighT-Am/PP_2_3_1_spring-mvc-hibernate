@@ -11,5 +11,5 @@ public interface UserDao {
 
     List<User> getUsersByCount(List<User> users, int count);
 
-    User getUserById(int id);
+    User showUserById(int id);
 }

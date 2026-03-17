@@ -48,7 +48,7 @@ public class UserDaoImpl implements UserDao {
 
     @Transactional
     @Override
-    public User getUserById(int id) {
+    public User showUserById(int id) {
         return sessionFactory.getCurrentSession().get(User.class, id);
     }
 }
