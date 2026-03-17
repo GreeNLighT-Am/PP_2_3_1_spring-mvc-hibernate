@@ -1,14 +1,41 @@
 package ru.greenlight.springmvchibernate.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "age")
     private int age;
+
+    @Column(name = "email")
     private String email;
 
     public User(String name, int age, String email) {
         this.name = name;
         this.age = age;
         this.email = email;
+    }
+
+    public User() {
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
