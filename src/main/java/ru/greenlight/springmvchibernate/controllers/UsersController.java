@@ -30,7 +30,7 @@ public class UsersController {
                 return "user";
             }
         } else {
-            model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("users", userService.showAllUsers());
         }
 
         return "users";

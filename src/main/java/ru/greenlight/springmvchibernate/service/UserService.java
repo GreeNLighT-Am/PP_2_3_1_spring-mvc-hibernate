@@ -8,7 +8,7 @@ public interface UserService {
 
     void addUsers();
 
-    List<User> getAllUsers();
+    List<User> showAllUsers();
 
     User showUserById(int id);
 }

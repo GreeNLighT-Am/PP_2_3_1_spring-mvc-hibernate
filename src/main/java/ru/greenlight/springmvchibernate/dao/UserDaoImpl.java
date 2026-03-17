@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
     @Transactional(readOnly = true)
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> getAllUsers() {
+    public List<User> showAllUsers() {
         TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("FROM User");
         return query.getResultList();
     }
