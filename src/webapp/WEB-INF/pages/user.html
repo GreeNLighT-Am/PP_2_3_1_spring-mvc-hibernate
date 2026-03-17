@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <title>User</title>
     <style>
         /* Стили для таблицы */
         table {
@@ -41,7 +41,7 @@
 
 <!-- Таблица отображается только если нет ошибки -->
 <div th:if="${error == null}">
-    <h1>Список пользователей</h1>
+    <h1>Пользователь</h1>
     <table>
         <thead>
         <tr>
@@ -52,7 +52,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${users}" style="cursor: pointer;" th:onclick="|window.location.href='@{/users(id=${user.id})}'|">
+        <tr>
             <td th:text="${user.id}"></td>
             <td th:text="${user.name}"></td>
             <td th:text="${user.age}"></td>

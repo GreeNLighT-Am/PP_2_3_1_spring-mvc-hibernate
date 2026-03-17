@@ -45,4 +45,10 @@ public class UserDaoImpl implements UserDao {
                 .limit(count)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    @Override
+    public User getUserById(int id) {
+        return sessionFactory.getCurrentSession().get(User.class, id);
+    }
 }

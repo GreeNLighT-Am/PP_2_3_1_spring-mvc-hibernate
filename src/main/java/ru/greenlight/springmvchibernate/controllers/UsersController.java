@@ -2,7 +2,7 @@ package ru.greenlight.springmvchibernate.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.greenlight.springmvchibernate.models.User;
@@ -21,17 +21,18 @@ public class UsersController {
     }
 
     @GetMapping("/users")
-    public String getUsers(@RequestParam(value = "count", required = false) Integer count, ModelMap model) {
+    public String getUsersByCount(@RequestParam(value = "id", required = false) Integer id, Model model) {
 
 //        userService.addUsers();
 
         List<User> users = userService.getAllUsers();
 
-        if (count != null) {
-            if (count < 0 || count == 0) {
-                model.addAttribute("error", "Ошибка: значение count не может быть 0 или отрицательным.");
+        if (id != null) {
+            if (id < 0 || id == 0) {
+                model.addAttribute("error", "Ошибка: значение id не может быть 0 или отрицательным.");
             } else {
-                model.addAttribute("users", userService.getUsersByCount(users, count));
+                model.addAttribute("user", userService.getUserById(id));
+                return "user";
             }
         } else {
             model.addAttribute("users", users);
