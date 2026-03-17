@@ -23,7 +23,7 @@ public class UsersController {
     @GetMapping("/users")
     public String getUsers(@RequestParam(value = "count", required = false) Integer count, ModelMap model) {
 
-        userService.addUsers();
+//        userService.addUsers();
 
         List<User> users = userService.getAllUsers();
 
