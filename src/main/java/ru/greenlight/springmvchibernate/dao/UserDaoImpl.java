@@ -30,6 +30,12 @@ public class UserDaoImpl implements UserDao {
         session.save(new User("Greg", 34, "gregory@gmail.com"));
     }
 
+    @Transactional
+    @Override
+    public void addUser(User user) {
+        sessionFactory.getCurrentSession().save(user);
+    }
+
     @Transactional(readOnly = true)
     @Override
     @SuppressWarnings("unchecked")
@@ -42,5 +48,22 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User showUserById(int id) {
         return sessionFactory.getCurrentSession().get(User.class, id);
+    }
+
+    @Transactional
+    @Override
+    public void updateUserById(int id, User updatedUser) {
+        User userTuBeUpdated = sessionFactory.getCurrentSession().get(User.class, id);
+
+        userTuBeUpdated.setName(updatedUser.getName());
+        userTuBeUpdated.setAge(updatedUser.getAge());
+        userTuBeUpdated.setEmail(updatedUser.getEmail());
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserById(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(session.get(User.class, id));
     }
 }
