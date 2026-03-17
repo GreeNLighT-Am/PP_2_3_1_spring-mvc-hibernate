@@ -10,7 +10,5 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    List<User> getUsersByCount(List<User> users, int count);
-
     User showUserById(int id);
 }

@@ -9,7 +9,6 @@ import ru.greenlight.springmvchibernate.models.User;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -39,14 +38,7 @@ public class UserDaoImpl implements UserDao {
         return query.getResultList();
     }
 
-    @Override
-    public List<User> getUsersByCount(List<User> users, int count) {
-        return users.stream()
-                .limit(count)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public User showUserById(int id) {
         return sessionFactory.getCurrentSession().get(User.class, id);

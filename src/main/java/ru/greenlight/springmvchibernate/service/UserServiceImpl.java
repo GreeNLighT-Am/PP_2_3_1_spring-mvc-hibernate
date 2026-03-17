@@ -27,11 +27,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsersByCount(List<User> users, int count) {
-        return userDao.getUsersByCount(users, count);
-    }
-
-    @Override
     public User showUserById(int id) {
         return userDao.showUserById(id);
     }

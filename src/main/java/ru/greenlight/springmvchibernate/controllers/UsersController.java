@@ -25,8 +25,6 @@ public class UsersController {
 
 //        userService.addUsers();
 
-        List<User> users = userService.getAllUsers();
-
         if (id != null) {
             if (id < 0 || id == 0) {
                 model.addAttribute("error", "Ошибка: значение id не может быть 0 или отрицательным.");
@@ -35,7 +33,7 @@ public class UsersController {
                 return "user";
             }
         } else {
-            model.addAttribute("users", users);
+            model.addAttribute("users", userService.getAllUsers());
         }
 
         return "users";
