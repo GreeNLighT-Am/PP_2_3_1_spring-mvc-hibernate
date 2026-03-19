@@ -1,8 +1,10 @@
 package ru.greenlight.springmvchibernate.controllers;
 
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.greenlight.springmvchibernate.models.User;
 import ru.greenlight.springmvchibernate.service.UserService;
@@ -42,7 +44,10 @@ public class UsersController {
     }
 
     @PostMapping("/users/add")
-    public String addUser(@ModelAttribute("user") User user) {
+    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult userBindingResult) {
+        if (userBindingResult.hasErrors()) {
+            return "new";
+        }
         userService.addUser(user);
         return "redirect:/users";
     }
@@ -54,7 +59,11 @@ public class UsersController {
     }
 
     @PostMapping("/users/update")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam(value = "id", required = false) Integer id) {
+    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult userBindingResult,
+                             @RequestParam(value = "id", required = false) Integer id) {
+        if (userBindingResult.hasErrors()) {
+            return "edit";
+        }
         userService.updateUserById(id, user);
         return "redirect:/users";
     }
