@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.greenlight.springmvchibernate.models.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -25,20 +26,24 @@ public class UserDaoImpl implements UserDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<User> showAllUsers() {
-        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u", User.class);
+        TypedQuery<User> query = entityManager.createQuery("FROM User", User.class);
         return query.getResultList();
     }
 
     @Transactional(readOnly = true)
     @Override
     public User showUserById(int id) {
-        return entityManager.find(User.class, id);
+        User user = entityManager.find(User.class, id);
+        if (user == null) {
+            throw new EntityNotFoundException("Пользователь с id " + id + " не найден.");
+        }
+        return user;
     }
 
     @Transactional
     @Override
     public void updateUserById(int id, User updatedUser) {
-        User userToBeUpdated = entityManager.find(User.class, id);
+        User userToBeUpdated = showUserById(id);
 
         userToBeUpdated.setName(updatedUser.getName());
         userToBeUpdated.setAge(updatedUser.getAge());
@@ -48,7 +53,6 @@ public class UserDaoImpl implements UserDao {
     @Transactional
     @Override
     public void deleteUserById(int id) {
-        User user = entityManager.find(User.class, id);
-        entityManager.remove(user);
+        entityManager.remove(showUserById(id));
     }
 }

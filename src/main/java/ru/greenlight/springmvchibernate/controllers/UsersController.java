@@ -1,5 +1,6 @@
 package ru.greenlight.springmvchibernate.controllers;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,15 @@ public class UsersController {
     public String showUsers(@RequestParam(value = "id", required = false) Integer id, Model model) {
 
         if (id != null) {
-            if (id < 0 || id == 0) {
+            if (id <= 0) {
                 model.addAttribute("error", "Ошибка: значение id не может быть 0 или отрицательным.");
             } else {
-                model.addAttribute("user", userService.showUserById(id));
-                return "users/user";
+                try {
+                    model.addAttribute("user", userService.showUserById(id));
+                    return "users/user";
+                } catch (EntityNotFoundException e) {
+                    model.addAttribute("error", e.getMessage());
+                }
             }
         } else {
             model.addAttribute("users", userService.showAllUsers());
