@@ -5,7 +5,6 @@ import ru.greenlight.springmvchibernate.models.User;
 import java.util.List;
 
 public interface UserDao {
-    void addUsers();
 
     void addUser(User user);
 

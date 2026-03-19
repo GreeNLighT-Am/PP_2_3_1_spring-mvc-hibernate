@@ -1,69 +1,54 @@
 package ru.greenlight.springmvchibernate.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.greenlight.springmvchibernate.models.User;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-    private final SessionFactory sessionFactory;
 
-    @Autowired
-    public UserDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    @Transactional
-    @Override
-    public void addUsers() {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(new User("Mike", 33, "mikle@gmail.com"));
-        session.save(new User("John", 45, "dearjohn@gmail.com"));
-        session.save(new User("Vasya", 23, "vasyanvasyanich@mail.ru"));
-        session.save(new User("Jackson", 22, "jackasson@hotmail.com"));
-        session.save(new User("Greg", 34, "gregory@gmail.com"));
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Transactional
     @Override
     public void addUser(User user) {
-        sessionFactory.getCurrentSession().save(user);
+        entityManager.persist(user);
     }
 
     @Transactional(readOnly = true)
     @Override
     @SuppressWarnings("unchecked")
     public List<User> showAllUsers() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("FROM User");
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u", User.class);
         return query.getResultList();
     }
 
     @Transactional(readOnly = true)
     @Override
     public User showUserById(int id) {
-        return sessionFactory.getCurrentSession().get(User.class, id);
+        return entityManager.find(User.class, id);
     }
 
     @Transactional
     @Override
     public void updateUserById(int id, User updatedUser) {
-        User userTuBeUpdated = sessionFactory.getCurrentSession().get(User.class, id);
+        User userToBeUpdated = entityManager.find(User.class, id);
 
-        userTuBeUpdated.setName(updatedUser.getName());
-        userTuBeUpdated.setAge(updatedUser.getAge());
-        userTuBeUpdated.setEmail(updatedUser.getEmail());
+        userToBeUpdated.setName(updatedUser.getName());
+        userToBeUpdated.setAge(updatedUser.getAge());
+        userToBeUpdated.setEmail(updatedUser.getEmail());
     }
 
     @Transactional
     @Override
     public void deleteUserById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        session.delete(session.get(User.class, id));
+        User user = entityManager.find(User.class, id);
+        entityManager.remove(user);
     }
 }
