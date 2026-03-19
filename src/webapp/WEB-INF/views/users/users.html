@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User</title>
+    <title>Users</title>
     <style>
         /* Стили для таблицы */
         table {
@@ -37,11 +37,24 @@
 <!-- Вывод сообщения об ошибке, если оно есть -->
 <div th:if="${error}" style="color: red; margin-bottom: 10px;">
     <p th:text="${error}"></p>
+
+    <p>Но вы можете добавить нового</p>
+
+    <form th:method="GET" th:action="@{/users/new}">
+        <input type="submit" value="Добавить нового пользователя"/>
+    </form>
+
+    <p>или вернуться</p>
+
+    <a th:href="@{/users}"><<< назад к списку пользователей</a>
 </div>
 
 <!-- Таблица отображается только если нет ошибки -->
 <div th:if="${error == null}">
-    <h1>Пользователь</h1>
+    <form th:method="GET" th:action="@{/users/new}">
+        <input type="submit" value="Добавить нового пользователя"/>
+    </form>
+    <h1>Список пользователей</h1>
     <table>
         <thead>
         <tr>
@@ -52,7 +65,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr th:each="user : ${users}" style="cursor: pointer;" th:onclick="|window.location.href='@{/users(id=${user.id})}'|">
             <td th:text="${user.id}"></td>
             <td th:text="${user.name}"></td>
             <td th:text="${user.age}"></td>
@@ -61,24 +74,6 @@
         </tbody>
     </table>
 </div>
-
-<form th:method="GET" th:action="@{/users/edit(id=${user.id})}" th:object="${user}">
-    <input type="hidden" th:field="*{id}"/>
-
-    <input type="submit" value="Редактировать"/>
-</form>
-
-<br/>
-
-<form th:method="POST" th:action="@{/users/delete}" th:object="${user}">
-    <input type="hidden" th:field="*{id}"/>
-
-    <input type="submit" value="Удалить"/>
-</form>
-
-<hr/>
-
-<a th:href="@{/users}"><<< назад к списку пользователей</a>
 
 </body>
 </html>

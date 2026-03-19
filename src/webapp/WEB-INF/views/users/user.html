@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <title>User</title>
     <style>
         /* Стили для таблицы */
         table {
@@ -39,13 +39,9 @@
     <p th:text="${error}"></p>
 </div>
 
-<form th:method="GET" th:action="@{/users/new}">
-    <input type="submit" value="Добавить нового пользователя"/>
-</form>
-
 <!-- Таблица отображается только если нет ошибки -->
 <div th:if="${error == null}">
-    <h1>Список пользователей</h1>
+    <h1>Пользователь</h1>
     <table>
         <thead>
         <tr>
@@ -56,7 +52,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${users}" style="cursor: pointer;" th:onclick="|window.location.href='@{/users(id=${user.id})}'|">
+        <tr>
             <td th:text="${user.id}"></td>
             <td th:text="${user.name}"></td>
             <td th:text="${user.age}"></td>
@@ -65,6 +61,24 @@
         </tbody>
     </table>
 </div>
+
+<form th:method="GET" th:action="@{/users/edit(id=${user.id})}" th:object="${user}">
+    <input type="hidden" th:field="*{id}"/>
+
+    <input type="submit" value="Редактировать"/>
+</form>
+
+<br/>
+
+<form th:method="POST" th:action="@{/users/delete}" th:object="${user}">
+    <input type="hidden" th:field="*{id}"/>
+
+    <input type="submit" value="Удалить" th:onclick="return confirm('Вы уверены, что хотите удалить пользователя?')"/>
+</form>
+
+<hr/>
+
+<a th:href="@{/users}"><<< назад к списку пользователей</a>
 
 </body>
 </html>
