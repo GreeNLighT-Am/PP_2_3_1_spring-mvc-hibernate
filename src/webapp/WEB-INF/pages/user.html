@@ -61,13 +61,24 @@
         </tbody>
     </table>
 </div>
-<a th:href="@{/users/edit(id=${user.id})}">Редактировать</a>
+
+<form th:method="GET" th:action="@{/users/edit(id=${user.id})}" th:object="${user}">
+    <input type="hidden" th:field="*{id}"/>
+
+    <input type="submit" value="Редактировать"/>
+</form>
+
+<br/>
 
 <form th:method="POST" th:action="@{/users/delete}" th:object="${user}">
-    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{id}"/>
 
     <input type="submit" value="Удалить"/>
 </form>
+
+<hr/>
+
+<a th:href="@{/users}"><<< назад к списку пользователей</a>
 
 </body>
 </html>

@@ -7,7 +7,7 @@
 <body>
 
 <form th:method="POST" th:action="@{/users/update}" th:object="${user}">
-    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{id}"/>
 
     <label for="name">Введите имя: </label>
     <input type="text" th:field="*{name}" id="name"/>
@@ -19,6 +19,14 @@
     <input type="text" th:field="*{email}" id="email"/>
     <br/>
     <input type="submit" value="Редактировать"/>
+</form>
+
+<br/>
+
+<form th:method="GET" th:action="@{/users(id=${user.id})}" th:object="${user}">
+    <input type="hidden" th:field="*{id}"/>
+
+    <input type="submit" value="Отмена"/>
 </form>
 
 </body>
