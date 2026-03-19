@@ -1,6 +1,6 @@
 package ru.greenlight.springmvchibernate.configs;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,8 +22,9 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-@Configuration
 @EnableWebMvc
+@Configuration
+@RequiredArgsConstructor
 @EnableTransactionManagement
 @PropertySource("classpath:db.properties")
 @ComponentScan("ru.greenlight.springmvchibernate")
@@ -31,12 +32,6 @@ public class AppConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
     private final Environment env;
-
-    @Autowired
-    public AppConfig(ApplicationContext applicationContext, Environment env) {
-        this.applicationContext = applicationContext;
-        this.env = env;
-    }
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
@@ -86,7 +81,7 @@ public class AppConfig implements WebMvcConfigurer {
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-        jpaProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect"));
+        jpaProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
 
         em.setJpaProperties(jpaProperties);
         return em;

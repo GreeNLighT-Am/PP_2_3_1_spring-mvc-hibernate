@@ -1,5 +1,6 @@
 package ru.greenlight.springmvchibernate.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.greenlight.springmvchibernate.dao.UserDao;
 import ru.greenlight.springmvchibernate.models.User;
@@ -7,12 +8,9 @@ import ru.greenlight.springmvchibernate.models.User;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
-
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
 
     @Override
     public void addUser(User user) {

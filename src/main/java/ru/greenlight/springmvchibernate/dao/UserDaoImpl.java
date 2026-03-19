@@ -16,22 +16,22 @@ public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional
     @Override
+    @Transactional
     public void addUser(User user) {
         entityManager.persist(user);
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<User> showAllUsers() {
         TypedQuery<User> query = entityManager.createQuery("FROM User", User.class);
         return query.getResultList();
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public User showUserById(int id) {
         User user = entityManager.find(User.class, id);
         if (user == null) {
@@ -40,8 +40,8 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void updateUserById(int id, User updatedUser) {
         User userToBeUpdated = showUserById(id);
 
@@ -50,8 +50,8 @@ public class UserDaoImpl implements UserDao {
         userToBeUpdated.setEmail(updatedUser.getEmail());
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void deleteUserById(int id) {
         entityManager.remove(showUserById(id));
     }

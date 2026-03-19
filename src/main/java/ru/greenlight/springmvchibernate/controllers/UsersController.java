@@ -3,6 +3,7 @@ package ru.greenlight.springmvchibernate.controllers;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,13 +13,10 @@ import ru.greenlight.springmvchibernate.service.UserService;
 
 @Controller
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UsersController {
 
     private final UserService userService;
-
-    public UsersController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping()
     public String showUsers(@RequestParam(value = "id", required = false) Integer id, Model model) {
