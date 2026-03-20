@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.greenlight.springmvchibernate.models.User;
 import ru.greenlight.springmvchibernate.service.UserService;
 
@@ -19,24 +20,30 @@ public class UsersController {
     private final UserService userService;
 
     @GetMapping()
-    public String showUsers(@RequestParam(value = "id", required = false) Integer id, Model model) {
+    public String showUsers(Model model) {
+
+        model.addAttribute("users", userService.showAllUsers());
+
+        return "users/users";
+    }
+
+    @GetMapping("/user")
+    public String showUser(@RequestParam(value = "id", required = false) Integer id, Model model) {
 
         if (id != null) {
             if (id <= 0) {
-                model.addAttribute("error", "Ошибка: значение id не может быть 0 или отрицательным.");
+                model.addAttribute("errorMessage", "Ошибка: значение id не может быть 0 или отрицательным.");
             } else {
                 try {
                     model.addAttribute("user", userService.showUserById(id));
                     return "users/user";
                 } catch (EntityNotFoundException e) {
-                    model.addAttribute("error", e.getMessage());
+                    model.addAttribute("errorMessage", e.getMessage());
                 }
             }
-        } else {
-            model.addAttribute("users", userService.showAllUsers());
         }
 
-        return "users/users";
+        return "users/user";
     }
 
     @GetMapping("/new")
@@ -45,12 +52,13 @@ public class UsersController {
     }
 
     @PostMapping("/add")
-    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult userBindingResult) {
+    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult userBindingResult, RedirectAttributes redirectAttributes) {
         if (userBindingResult.hasErrors()) {
             return "users/new";
         }
         userService.addUser(user);
-        return "users/user";
+        redirectAttributes.addFlashAttribute("successMessage", String.format("Пользователь %s успешно создан.", user.getName()));
+        return "redirect:/users";
     }
 
     @GetMapping("/edit")
@@ -60,18 +68,25 @@ public class UsersController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult userBindingResult,
-                             @RequestParam(value = "id", required = false) Integer id) {
+    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult userBindingResult, RedirectAttributes redirectAttributes) {
         if (userBindingResult.hasErrors()) {
             return "users/edit";
         }
-        userService.updateUserById(id, user);
-        return "users/user";
+        userService.updateUser(user);
+        redirectAttributes.addFlashAttribute("successMessage", "Пользователь успешно обновлён.");
+
+        return "redirect:/users/user?id=" + user.getId();
     }
 
     @PostMapping("/delete")
-    public String deleteUser(@RequestParam(value = "id", required = false) Integer id) {
-        userService.deleteUserById(id);
+    public String deleteUser(@RequestParam(value = "id", required = false) Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            String userName = userService.showUserById(id).getName();
+            userService.deleteUserById(id);
+            redirectAttributes.addFlashAttribute("successMessage", String.format("Пользователь %s успешно удалён.", userName));
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", String.format("Ошибка при удалении пользователя: %s", e.getMessage()));
+        }
         return "redirect:/users";
     }
 

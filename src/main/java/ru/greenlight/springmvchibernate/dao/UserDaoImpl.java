@@ -24,7 +24,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @Transactional(readOnly = true)
-    @SuppressWarnings("unchecked")
     public List<User> showAllUsers() {
         TypedQuery<User> query = entityManager.createQuery("FROM User", User.class);
         return query.getResultList();
@@ -42,8 +41,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @Transactional
-    public void updateUserById(int id, User updatedUser) {
-        User userToBeUpdated = showUserById(id);
+    public void updateUser(User updatedUser) {
+        User userToBeUpdated = showUserById(updatedUser.getId());
 
         userToBeUpdated.setName(updatedUser.getName());
         userToBeUpdated.setAge(updatedUser.getAge());
@@ -55,4 +54,5 @@ public class UserDaoImpl implements UserDao {
     public void deleteUserById(int id) {
         entityManager.remove(showUserById(id));
     }
+
 }

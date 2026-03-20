@@ -12,8 +12,9 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
-@RequiredArgsConstructor
 public class User {
 
     @Id
@@ -34,4 +35,5 @@ public class User {
     @NotEmpty(message = "Email не должен быть пустым")
     @Email(message = "Email должен быть валидным")
     private String email;
+
 }

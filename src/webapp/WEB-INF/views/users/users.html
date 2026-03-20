@@ -30,13 +30,29 @@
         tr:hover {
             background-color: #f1f1f1; /* Цвет строки при наведении */
         }
+
+        /* Стили для сообщений */
+        .success-message {
+            color: green;
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
+<!-- Вывод сообщения об успешной операции, если оно есть -->
+<div th:if="${successMessage}" class="success-message">
+    <p th:text="${successMessage}"></p>
+</div>
+
 <!-- Вывод сообщения об ошибке, если оно есть -->
-<div th:if="${error}" style="color: red; margin-bottom: 10px;">
-    <p th:text="${error}"></p>
+<div th:if="${errorMessage}" class="error-message">
+    <p th:text="${errorMessage}"></p>
 
     <p>Но вы можете добавить нового</p>
 
@@ -50,7 +66,7 @@
 </div>
 
 <!-- Таблица отображается только если нет ошибки -->
-<div th:if="${error == null}">
+<div th:if="${errorMessage == null}">
     <form th:method="GET" th:action="@{/users/new}">
         <input type="submit" value="Добавить нового пользователя"/>
     </form>
@@ -65,7 +81,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${users}" style="cursor: pointer;" th:onclick="|window.location.href='@{/users(id=${user.id})}'|">
+        <tr th:each="user : ${users}" style="cursor: pointer;"
+            th:onclick="|window.location.href='@{/users/user(id=${user.id})}'|">
             <td th:text="${user.id}"></td>
             <td th:text="${user.name}"></td>
             <td th:text="${user.age}"></td>
