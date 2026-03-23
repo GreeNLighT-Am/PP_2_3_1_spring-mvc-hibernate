@@ -30,16 +30,15 @@ public class UsersController {
     @GetMapping("/user")
     public String showUser(@RequestParam(value = "id", required = false) Integer id, Model model) {
 
-        if (id != null) {
-            if (id <= 0) {
-                model.addAttribute("errorMessage", "Ошибка: значение id не может быть 0 или отрицательным.");
-            } else {
-                try {
-                    model.addAttribute("user", userService.showUserById(id));
-                    return "users/user";
-                } catch (EntityNotFoundException e) {
-                    model.addAttribute("errorMessage", e.getMessage());
-                }
+        if (id == null || id <= 0) {
+            model.addAttribute("errorMessage", "Ошибка отображения пользователя: значение id не может быть пустым, 0 или отрицательным.");
+            return "users/users";
+        } else {
+            try {
+                model.addAttribute("user", userService.showUserById(id));
+            } catch (EntityNotFoundException e) {
+                model.addAttribute("errorMessage", String.format("Ошибка отображения пользователя: %s", e.getMessage()));
+                return "users/users";
             }
         }
 
@@ -63,7 +62,19 @@ public class UsersController {
 
     @GetMapping("/edit")
     public String editUser(@RequestParam(value = "id", required = false) Integer id, Model model) {
-        model.addAttribute("user", userService.showUserById(id));
+
+        if (id == null || id <= 0) {
+            model.addAttribute("errorMessage", "Ошибка редактирования пользователя: значение id не может быть пустым, 0 или отрицательным.");
+            return "users/users";
+        } else {
+            try {
+                model.addAttribute("user", userService.showUserById(id));
+            } catch (EntityNotFoundException e) {
+                model.addAttribute("errorMessage", String.format("Ошибка редактирования пользователя: %s", e.getMessage()));
+                return "users/users";
+            }
+        }
+
         return "users/edit";
     }
 

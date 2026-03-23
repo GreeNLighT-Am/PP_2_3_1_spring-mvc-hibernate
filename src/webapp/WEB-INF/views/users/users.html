@@ -54,7 +54,7 @@
 <div th:if="${errorMessage}" class="error-message">
     <p th:text="${errorMessage}"></p>
 
-    <p>Но вы можете добавить нового</p>
+    <p>Но вы можете добавить нового пользователя</p>
 
     <form th:method="GET" th:action="@{/users/new}">
         <input type="submit" value="Добавить нового пользователя"/>

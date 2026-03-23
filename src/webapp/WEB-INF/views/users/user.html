@@ -30,42 +30,11 @@
         tr:hover {
             background-color: #f1f1f1; /* Цвет строки при наведении */
         }
-
-        .error {
-            color: red;
-            margin-bottom: 10px;
-        }
-
-        .success-message {
-            color: green;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
 
-<!-- Вывод сообщения об ошибке, если оно есть -->
-<div th:if="${errorMessage}" class="error">
-    <p th:text="${errorMessage}"></p>
-
-    <p>Но вы можете добавить нового</p>
-
-    <form th:method="GET" th:action="@{/users/new}">
-        <input type="submit" value="Добавить нового пользователя"/>
-    </form>
-
-    <p>или вернуться</p>
-
-    <a th:href="@{/users}"><<< назад к списку пользователей</a>
-</div>
-
-<!-- Вывод сообщения об успешной операции, если оно есть -->
-<div th:if="${successMessage}" class="success-message">
-    <p th:text="${successMessage}"></p>
-</div>
-
-<!-- Таблица отображается только если нет ошибки -->
-<div th:if="${errorMessage == null}">
+<div>
     <h1>Пользователь</h1>
     <table>
         <thead>
